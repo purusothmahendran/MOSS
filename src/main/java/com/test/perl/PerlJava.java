@@ -60,6 +60,7 @@ public class PerlJava extends HttpServlet {
 				String line = null;
 				while ((line = in.readLine()) != null) {
 				System.out.println(line);
+				response.getWriter().print(line);
 				}
 				} catch (IOException e) {
 				e.printStackTrace();
