@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="/testapp/PerlJava">Here</a>
+<a href="/PerlJava">Here</a>
 </body>
 </html>
