@@ -39,7 +39,7 @@ public class PerlJava extends HttpServlet {
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
 			String path = servletContext.getRealPath("/WEB-INF/moss.pl");
-			String file1 = servletContext.getRealPath("/WEB-INF/hellodei.java");
+			String file1 = servletContext.getRealPath("/WEB-INF/*.java");
 			String file2 = servletContext.getRealPath("/WEB-INF/deidei.java");
 			//System.out.println(path+ " "+file1);
 			File file  =new File(path);
@@ -47,7 +47,7 @@ public class PerlJava extends HttpServlet {
 				System.out.println("hello");
 			}
 			Runtime r = Runtime.getRuntime();
-			process = r.exec("perl "+path+" -l java "+file1+" "+file2);
+			process = r.exec("perl "+path+" -l java "+file1);
 			
 			process.waitFor();
 			//Runtime rt = Runtime.getRuntime();
