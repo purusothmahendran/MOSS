@@ -46,7 +46,7 @@ public class PerlJava extends HttpServlet {
 			String folderName = "1";
 			String masterFileName = "MyFirstRobot.java";
             String masterFile = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+masterFileName;
-            String compFiles = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+"vFiles"+File.separator+"\\\\*.java";
+            String compFiles = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+"vFiles";
 			File file  =new File(path);
 			if(file.exists()){
 				System.out.println("hello");
@@ -57,14 +57,13 @@ public class PerlJava extends HttpServlet {
 				System.out.println("hello");
 				response.getWriter().print("Checking Files exists");
 			}
-			File filer3=new File(compFiles);
-			if(filer3.exists()){
-				System.out.println("hello");
-				response.getWriter().print("Vfiles Java files exists");
+			File vFiles=new File(compFiles);
+			File[] listFiles=vFiles.listFiles();
+			for(int i=0;i<listFiles.length;i++)
+			{
+				response.getWriter().print(listFiles[i]);
 			}
-			else{
-				response.getWriter().print("Vfiles Java files doesn't exist");
-			}
+	
 			Runtime r = Runtime.getRuntime();
 			process = r.exec("perl " + path + " -l java "
 					+ masterFile + " "
