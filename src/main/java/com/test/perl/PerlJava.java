@@ -219,7 +219,7 @@ public class PerlJava extends HttpServlet {
 	        	
 	        	if((plagPercent.iterator().next())>15){
 	        		
-	        		percent.append("Percentage of Plagiarism is : "+"-"+plagPercent.toString());
+	        		percent.append("Percentage of Plagiarism is : "+"-"+plagPercent.iterator().next());
 	        	}
 	        	
 	        }
