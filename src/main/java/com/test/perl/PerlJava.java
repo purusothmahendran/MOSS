@@ -103,11 +103,11 @@ public class PerlJava extends HttpServlet {
 		                String httpurl1=m.group(1);
 		                System.out.print(httpurl1.toString()+"\n");
 		              response.getWriter().print(httpurl1.toString());
-		              result= interpretURL(httpurl1.toString());
+		              result= interpretURL(httpurl1.toString(),masterFileName);
 		              response.getWriter().print("\n"+ result+ "\n");
 		            }
 		        	   else{
-		        		   response.getWriter().print("NOT MATCHING");
+		        		   //response.getWriter().print("NOT MATCHING");
 		        		   System.out.println("nomatch");}
 		            
 		            
@@ -148,7 +148,7 @@ public class PerlJava extends HttpServlet {
 		return baseFileName;
 	}
 	
-	 protected  String interpretURL(String resultURL) throws Exception{
+	 protected  String interpretURL(String resultURL,String masterFileName) throws Exception{
 	    	String result=resultURL;
 	    	String percentage;
 	    	StringBuilder percent=new StringBuilder();
@@ -160,7 +160,7 @@ public class PerlJava extends HttpServlet {
 	        {
 	        	String fileName;    
 	        	String re1=".*?";	// Non-greedy match on filler
-	            String re2="(Walls\\.java)";	// Fully Qualified Domain Name 1
+	            String re2="("+masterFileName+"\\.java)";	// Fully Qualified Domain Name 1
 	            String txt=inputLine;
 	            Pattern p = Pattern.compile(re1+re2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	            Matcher m = p.matcher(txt);
@@ -196,7 +196,7 @@ public class PerlJava extends HttpServlet {
 	        	    }
 	            }
 	        	// DO whatever for no match 
-	        	     //else{System.out.println("NM");}
+	        	     else{percent.append("THE CODE IS NOT PLAGIARISED - ISN'T THAT AWESOME");}
 	        }
 	        in.close();
 	        percentage=percent.toString();
