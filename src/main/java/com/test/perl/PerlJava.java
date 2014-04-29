@@ -152,6 +152,7 @@ public class PerlJava extends HttpServlet {
 	    	String result=resultURL;
 	    	String percentage;
 	    	StringBuilder percent=new StringBuilder();
+	    	int percentDuplicate=0;
 	        URL oracle = new URL(result);
 	        BufferedReader in = new BufferedReader(
 	        new InputStreamReader(oracle.openStream()));
@@ -177,7 +178,7 @@ public class PerlJava extends HttpServlet {
 	        	    Matcher ma = pa.matcher(txt2);
 	        	    if (ma.find())
 	        	    {
-	        	    	int percentDuplicate;
+	        	    	
 	        	    	String print="";
 	        	        String rbraces1=ma.group(1);
 	        	        String intermediate=rbraces1.toString();
@@ -196,7 +197,12 @@ public class PerlJava extends HttpServlet {
 	        	    }
 	            }
 	        	// DO whatever for no match 
-	        	     else{percent.append("THE CODE IS NOT PLAGIARISED - ISN'T THAT AWESOME");}
+	        	     else{
+	        	    	 
+		        	        percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+		        	    }
+	        	    	 //percent.append("THE CODE IS NOT PLAGIARISED - ISN'T THAT AWESOME");
+	        	    	 
 	        }
 	        in.close();
 	        percentage=percent.toString();
