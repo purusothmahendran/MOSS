@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
@@ -37,6 +39,8 @@ public class PerlJava extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		try {
+			String resultURL=null;
+			String result;
 			StringBuilder fileNames = new StringBuilder();
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
@@ -67,7 +71,7 @@ public class PerlJava extends HttpServlet {
 				//fileNames.append("");
 			}
 			
-			response.getWriter().print(fileNames+"\n");
+			//response.getWriter().print(fileNames+"\n");
 			Runtime r = Runtime.getRuntime();
 			process = r.exec("perl " + path + " -l java -b "+ baseFilePath+" "
 					+ masterFile + " "
@@ -85,10 +89,23 @@ public class PerlJava extends HttpServlet {
 			
 			try {
 				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				String line = null;
-				while ((line = in.readLine()) != null) {
-				System.out.println(line);
-				response.getWriter().print(line);
+				String inputLine;
+				
+				while ((inputLine = in.readLine()) != null) {
+					String re1=".*?";	// Non-greedy match on filler
+		            String re2="(http:\\/\\/moss\\.stanford\\.edu\\/results\\/[0-9]+)";	// HTTP URL 1
+
+		            Pattern p = Pattern.compile(re1+re2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+		            Matcher m = p.matcher(inputLine);
+		            if (m.find())
+		            {
+		                String httpurl1=m.group(1);
+		                System.out.print(httpurl1.toString()+"\n");
+		                resultURL=httpurl1.toString();
+		            }
+		        	   else{System.out.println("nomatch");}
+		            result= interpretURL(resultURL);
+		            response.getWriter().print("\n"+ result+ "\n");
 				}
 				} catch (IOException e) {
 				e.printStackTrace();
@@ -100,7 +117,9 @@ public class PerlJava extends HttpServlet {
 			} catch(Exception excep) {
 			excep.printStackTrace();
 			}
+		
 	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -123,4 +142,59 @@ public class PerlJava extends HttpServlet {
 		String baseFileName="Tracker.java";
 		return baseFileName;
 	}
+	
+	 protected  String interpretURL(String resultURL) throws Exception{
+	    	String result=resultURL;
+	    	String percentage;
+	    	StringBuilder percent=new StringBuilder();
+	        URL oracle = new URL(result);
+	        BufferedReader in = new BufferedReader(
+	        new InputStreamReader(oracle.openStream()));
+	        String inputLine;
+	        while ((inputLine = in.readLine()) != null)
+	        {
+	        	String fileName;    
+	        	String re1=".*?";	// Non-greedy match on filler
+	            String re2="(Walls\\.java)";	// Fully Qualified Domain Name 1
+	            String txt=inputLine;
+	            Pattern p = Pattern.compile(re1+re2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+	            Matcher m = p.matcher(txt);
+	            if (m.find())
+	            {
+	                String fqdn1=m.group(1);
+	                System.out.println(inputLine);
+	                fileName=fqdn1.toString();
+	                
+	                String reg1=".*?";	// Non-greedy match on filler
+	        	    String reg2="(\\([0-9]+%\\))";	// Round Braces 1
+	        	    String txt2=inputLine;
+	        	    Pattern pa = Pattern.compile(reg1+reg2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+	        	    Matcher ma = pa.matcher(txt2);
+	        	    if (ma.find())
+	        	    {
+	        	    	int percentDuplicate;
+	        	    	String print="";
+	        	        String rbraces1=ma.group(1);
+	        	        String intermediate=rbraces1.toString();
+	        	        int length=intermediate.length();
+	        	        if(length==5){
+	        	        print=intermediate.substring(1, 3);}
+	        	        else if(length==6){
+	        	        	print=intermediate.substring(1,4);
+	        	        }
+	        	        else if(length==4){
+	        	        	
+	        	        	print=intermediate.substring(1,2);
+	        	        }
+	        	        percentDuplicate=Integer.parseInt(print);
+	        	        percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+	        	    }
+	            }
+	        	// DO whatever for no match 
+	        	     //else{System.out.println("NM");}
+	        }
+	        in.close();
+	        return(percent.toString());
+	    	
+	    }
 }
