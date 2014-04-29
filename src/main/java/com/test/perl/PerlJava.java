@@ -37,6 +37,7 @@ public class PerlJava extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		try {
+			StringBuilder fileNames=null;
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
 			String path = servletContext.getRealPath("/WEB-INF/moss.pl");
@@ -61,9 +62,12 @@ public class PerlJava extends HttpServlet {
 			File[] listFiles=vFiles.listFiles();
 			for(int i=0;i<listFiles.length;i++)
 			{
-				response.getWriter().print(listFiles[i]);
+				//response.getWriter().print(listFiles[i]);
+				fileNames.append(listFiles[i].getAbsolutePath());
+				fileNames.append("");
 			}
-	
+			
+			response.getWriter().print(fileNames);
 			Runtime r = Runtime.getRuntime();
 			process = r.exec("perl " + path + " -l java "
 					+ masterFile + " "
