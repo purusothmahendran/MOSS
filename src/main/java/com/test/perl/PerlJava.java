@@ -41,9 +41,10 @@ public class PerlJava extends HttpServlet {
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
 			String path = servletContext.getRealPath("/WEB-INF/moss.pl");
-			String file1 = servletContext.getRealPath("/WEB-INF/hellodei.java");
-			String file2 = servletContext.getRealPath("/WEB-INF/deidei.java");
+			//String file1 = servletContext.getRealPath("/WEB-INF/hellodei.java");
+			//String file2 = servletContext.getRealPath("/WEB-INF/deidei.java");
 			//System.out.println(path+ " "+file1);
+			String baseFilePath=";/var/lib/openshift/534a1c2e5004461227000cf4/app-root/data/Plag/1/vFiles/Tracker.java";
 			String folderName = "1";
 			String masterFileName = "MyFirstRobot.java";
             String masterFile = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+masterFileName;
@@ -70,7 +71,7 @@ public class PerlJava extends HttpServlet {
 			
 			response.getWriter().print(fileNames);
 			Runtime r = Runtime.getRuntime();
-			process = r.exec("perl " + path + " -l java "
+			process = r.exec("perl " + path + " -l java -b "+ baseFilePath+" "
 					+ masterFile + " "
 					+ fileNames);
 			/*process = r.exec("perl " + path + " -l java "
