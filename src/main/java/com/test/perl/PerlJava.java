@@ -39,7 +39,7 @@ public class PerlJava extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		try {
-			String resultURL=null;
+			
 			String result;
 			StringBuilder fileNames = new StringBuilder();
 			Process process;
@@ -88,6 +88,7 @@ public class PerlJava extends HttpServlet {
 			response.getWriter().print("Normal \n");
 			
 			try {
+				
 				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				String inputLine;
 				
@@ -101,12 +102,15 @@ public class PerlJava extends HttpServlet {
 		            {
 		                String httpurl1=m.group(1);
 		                System.out.print(httpurl1.toString()+"\n");
-		                resultURL=httpurl1.toString();
-		                response.getWriter().print(resultURL);
+		              response.getWriter().print(httpurl1.toString());
+		              result= interpretURL(httpurl1.toString());
+		              response.getWriter().print("\n"+ result+ "\n");
 		            }
-		        	   else{System.out.println("nomatch");}
-		            result= interpretURL(resultURL);
-		            response.getWriter().print("\n"+ result+ "\n");
+		        	   else{
+		        		   response.getWriter().print("NOT MATCHING");
+		        		   System.out.println("nomatch");}
+		            
+		            
 				}
 				} catch (IOException e) {
 				e.printStackTrace();
