@@ -52,7 +52,7 @@ public class PerlJava extends HttpServlet {
 				System.out.println("hello");
 			}
 			Runtime r = Runtime.getRuntime();
-			process = r.exec("perl " + path + " -l java "
+			process = r.exec("perl " + path + " -l java -d "
 					+ masterFile + " "
 					+ compFiles);
 			/*process = r.exec("perl " + path + " -l java "
