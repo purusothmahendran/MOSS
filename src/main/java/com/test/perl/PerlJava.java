@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
@@ -152,6 +154,7 @@ public class PerlJava extends HttpServlet {
 	    	String result=resultURL;
 	    	String percentage;
 	    	StringBuilder percent=new StringBuilder();
+	    	List<Integer> plagPercent=new ArrayList<Integer>();
 	    	int percentDuplicate=0;
 	        URL oracle = new URL(result);
 	        BufferedReader in = new BufferedReader(
@@ -193,7 +196,8 @@ public class PerlJava extends HttpServlet {
 	        	        	print=intermediate.substring(1,2);
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
-	        	        percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+	        	        
+	        	        plagPercent.add(percentDuplicate);
 	        	    }
 	            }
 	        	// DO whatever for no match 
@@ -207,9 +211,19 @@ public class PerlJava extends HttpServlet {
 	        in.close();
 	        if(percent.toString().isEmpty()){
 	        	percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+	        	plagPercent.add(percentDuplicate);
+	        }
+	        
+	        
+	        while(plagPercent.iterator().hasNext()){
+	        	
+	        	if((plagPercent.iterator().next())>15){
+	        		
+	        		percent.append("Percentage of Plagiarism is : "+"-"+plagPercent.toString());
+	        	}
+	        	
 	        }
 	        percentage=percent.toString();
-	
 	        return percentage;
 	    	
 	    }
