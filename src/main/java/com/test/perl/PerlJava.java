@@ -162,7 +162,8 @@ public class PerlJava extends HttpServlet {
 	        String inputLine;
 	        while ((inputLine = in.readLine()) != null)
 	        {
-	        	String fileName;    
+	        	Boolean plagiarised=false;  
+	        	String fileName;
 	        	String re1=".*?";	// Non-greedy match on filler
 	            String re2="("+masterFileName+"\\.java)";	// Fully Qualified Domain Name 1
 	            String txt=inputLine;
@@ -196,7 +197,11 @@ public class PerlJava extends HttpServlet {
 	        	        	print=intermediate.substring(1,2);
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
+	        	        if(percentDuplicate>15){
 	        	        percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+	        	        plagiarised=true;
+	        	        return percent.toString();
+	        	        }
 	        	        //plagPercent.add(percentDuplicate);
 	        	    }
 	            }
@@ -215,14 +220,7 @@ public class PerlJava extends HttpServlet {
 	        }
 	        
 	        
-	       /* while(plagPercent.iterator().hasNext()){
-	        	
-	        	if((plagPercent.iterator().next())>15){
-	        		
-	        		percent.append("Percentage of Plagiarism is : "+"-"+plagPercent.iterator().next());
-	        	}
-	        	
-	        }*/
+	       
 	        percentage=percent.toString();
 	        return percentage;
 	    	
