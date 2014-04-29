@@ -165,7 +165,7 @@ public class PerlJava extends HttpServlet {
 	        	Boolean plagiarised=false;  
 	        	String fileName;
 	        	String re1=".*?";	// Non-greedy match on filler
-	            String re2="("+masterFileName+"\\.java)";
+	            String re2="("+masterFileName+")";
 	            //String re2="(Walls\\.java)";// Fully Qualified Domain Name 1
 	            String txt=inputLine;
 	            Pattern p = Pattern.compile(re1+re2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
