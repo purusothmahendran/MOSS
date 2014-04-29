@@ -199,12 +199,15 @@ public class PerlJava extends HttpServlet {
 	        	// DO whatever for no match 
 	        	     else{
 	        	    	 
-		        	        percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+		        	        
 		        	    }
-	        	    	 //percent.append("THE CODE IS NOT PLAGIARISED - ISN'T THAT AWESOME");
+	        	    	 
 	        	    	 
 	        }
 	        in.close();
+	        if(percent.toString().isEmpty()){
+	        	percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+	        }
 	        percentage=percent.toString();
 	
 	        return percentage;
