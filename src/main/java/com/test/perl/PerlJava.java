@@ -37,7 +37,7 @@ public class PerlJava extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		try {
-			StringBuilder fileNames=null;
+			StringBuilder fileNames = new StringBuilder();
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
 			String path = servletContext.getRealPath("/WEB-INF/moss.pl");
