@@ -63,15 +63,15 @@ public class PerlJava extends HttpServlet {
 			for(int i=0;i<listFiles.length;i++)
 			{
 				//response.getWriter().print(listFiles[i]);
-				fileNames.append(listFiles[i].getAbsolutePath());
-				fileNames.append("");
+				fileNames.append(listFiles[i].getAbsolutePath()+" ");
+				//fileNames.append("");
 			}
 			
 			response.getWriter().print(fileNames);
 			Runtime r = Runtime.getRuntime();
 			process = r.exec("perl " + path + " -l java "
 					+ masterFile + " "
-					+ compFiles);
+					+ fileNames);
 			/*process = r.exec("perl " + path + " -l java "
 					+ file1 + " "
 					+ file2);*/
