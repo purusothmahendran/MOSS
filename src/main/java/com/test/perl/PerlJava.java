@@ -41,14 +41,12 @@ public class PerlJava extends HttpServlet {
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
 			String path = servletContext.getRealPath("/WEB-INF/moss.pl");
-			//String file1 = servletContext.getRealPath("/WEB-INF/hellodei.java");
-			//String file2 = servletContext.getRealPath("/WEB-INF/deidei.java");
-			//System.out.println(path+ " "+file1);
-			String baseFilePath="/var/lib/openshift/534a1c2e5004461227000cf4/app-root/data/Plag/1/vFiles/Tracker.java";
-			String folderName = "1";
-			String masterFileName = "MyFirstRobot.java";
+			String baseFileName=getBaseFileName(request);
+			String folderName = getFolderName(request);
+			String masterFileName = getMasterFileName(request);
             String masterFile = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+masterFileName;
             String compFiles = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+"vFiles";
+            String baseFilePath=PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+baseFileName;
 			File file  =new File(path);
 			if(file.exists()){
 				System.out.println("hello");
@@ -110,5 +108,19 @@ public class PerlJava extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
-
+	
+	protected String getFolderName(HttpServletRequest request){
+		String folderName="1";
+		return folderName;
+	}
+	
+	protected String getMasterFileName(HttpServletRequest request){
+		String masterFileName="MyFirstRobot.java";
+		return masterFileName;
+	}
+	
+	protected String getBaseFileName(HttpServletRequest request){
+		String baseFileName="Tracker.java";
+		return baseFileName;
+	}
 }
