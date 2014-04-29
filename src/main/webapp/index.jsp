@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="/PerlJava">Here da dei</a>
+<a href="/PerlJava">Please Click Here to Launch Plagiarism Check</a>
 </body>
 </html>

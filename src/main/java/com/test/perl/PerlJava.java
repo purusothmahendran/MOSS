@@ -50,12 +50,12 @@ public class PerlJava extends HttpServlet {
 			File file  =new File(path);
 			if(file.exists()){
 				System.out.println("hello");
-				response.getWriter().print("moss.pl exists");
+				response.getWriter().print("moss.pl exists \n");
 			}
 			File filer2=new File(masterFile);
 			if(filer2.exists()){
 				System.out.println("hello");
-				response.getWriter().print("Checking Files exists");
+				response.getWriter().print("Checking Files exists \n");
 			}
 			File vFiles=new File(compFiles);
 			File[] listFiles=vFiles.listFiles();
@@ -67,7 +67,7 @@ public class PerlJava extends HttpServlet {
 				//fileNames.append("");
 			}
 			
-			response.getWriter().print(fileNames);
+			response.getWriter().print(fileNames+"\n");
 			Runtime r = Runtime.getRuntime();
 			process = r.exec("perl " + path + " -l java -b "+ baseFilePath+" "
 					+ masterFile + " "
@@ -81,7 +81,7 @@ public class PerlJava extends HttpServlet {
 			//rt.exec(command);
 			if(process.exitValue() == 0) {
 			System.out.println("Process Executed Normally");
-			response.getWriter().print("Normal");
+			response.getWriter().print("Normal \n");
 			
 			try {
 				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
