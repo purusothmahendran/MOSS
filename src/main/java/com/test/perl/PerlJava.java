@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/PerlJava")
 public class PerlJava extends HttpServlet {
+	public static final String PLAG_ROOT_FOLDER = "/var/lib/openshift/534a1c2e5004461227000cf4/app-root/data/Plag";
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -39,15 +40,21 @@ public class PerlJava extends HttpServlet {
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
 			String path = servletContext.getRealPath("/WEB-INF/moss.pl");
-			String file1 = servletContext.getRealPath("/WEB-INF/hellodei.java");
-			String file2 = servletContext.getRealPath("/WEB-INF/deidei.java");
+			//String file1 = servletContext.getRealPath("/WEB-INF/hellodei.java");
+			//String file2 = servletContext.getRealPath("/WEB-INF/deidei.java");
 			//System.out.println(path+ " "+file1);
+			String folderName = "1";
+			String masterFileName = "MyFirstRobot.java";
+            String masterFile = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+masterFileName;
+            String compFiles = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+"vFiles"+File.separator+"*.java";
 			File file  =new File(path);
 			if(file.exists()){
 				System.out.println("hello");
 			}
 			Runtime r = Runtime.getRuntime();
-			process = r.exec("perl "+path+" -l java "+file1+" "+file2);
+			process = r.exec("perl " + path + " -l java "
+					+ masterFile + " "
+					+ compFiles);
 			
 			process.waitFor();
 			//Runtime rt = Runtime.getRuntime();
