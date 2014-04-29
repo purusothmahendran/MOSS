@@ -44,7 +44,7 @@ public class PerlJava extends HttpServlet {
 			//String file1 = servletContext.getRealPath("/WEB-INF/hellodei.java");
 			//String file2 = servletContext.getRealPath("/WEB-INF/deidei.java");
 			//System.out.println(path+ " "+file1);
-			String baseFilePath=";/var/lib/openshift/534a1c2e5004461227000cf4/app-root/data/Plag/1/vFiles/Tracker.java";
+			String baseFilePath="/var/lib/openshift/534a1c2e5004461227000cf4/app-root/data/Plag/1/vFiles/Tracker.java";
 			String folderName = "1";
 			String masterFileName = "MyFirstRobot.java";
             String masterFile = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+masterFileName;
