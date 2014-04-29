@@ -102,6 +102,7 @@ public class PerlJava extends HttpServlet {
 		                String httpurl1=m.group(1);
 		                System.out.print(httpurl1.toString()+"\n");
 		                resultURL=httpurl1.toString();
+		                response.getWriter().print(resultURL);
 		            }
 		        	   else{System.out.println("nomatch");}
 		            result= interpretURL(resultURL);
@@ -194,7 +195,9 @@ public class PerlJava extends HttpServlet {
 	        	     //else{System.out.println("NM");}
 	        }
 	        in.close();
-	        return(percent.toString());
+	        percentage=percent.toString();
+	
+	        return percentage;
 	    	
 	    }
 }
