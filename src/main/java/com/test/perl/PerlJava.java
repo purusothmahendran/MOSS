@@ -46,13 +46,13 @@ public class PerlJava extends HttpServlet {
 			String folderName = "1";
 			String masterFileName = "MyFirstRobot.java";
             String masterFile = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+masterFileName;
-            String compFiles = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+"vFiles";
+            String compFiles = PLAG_ROOT_FOLDER+ File.separator+folderName+File.separator+"vFiles"+File.separator+"\\\\*.java";
 			File file  =new File(path);
 			if(file.exists()){
 				System.out.println("hello");
 			}
 			Runtime r = Runtime.getRuntime();
-			process = r.exec("perl " + path + " -l java -d "
+			process = r.exec("perl " + path + " -l java "
 					+ masterFile + " "
 					+ compFiles);
 			/*process = r.exec("perl " + path + " -l java "
