@@ -64,7 +64,7 @@ public class PerlJava extends HttpServlet {
 			for(int i=0;i<listFiles.length;i++)
 			{
 				//response.getWriter().print(listFiles[i]);
-				fileNames.append(listFiles[i]+" ");
+				fileNames.append(listFiles[i]);
 				//fileNames.append("");
 			}
 			
