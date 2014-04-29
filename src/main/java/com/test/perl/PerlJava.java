@@ -196,8 +196,8 @@ public class PerlJava extends HttpServlet {
 	        	        	print=intermediate.substring(1,2);
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
-	        	        
-	        	        plagPercent.add(percentDuplicate);
+	        	        percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+	        	        //plagPercent.add(percentDuplicate);
 	        	    }
 	            }
 	        	// DO whatever for no match 
@@ -211,18 +211,18 @@ public class PerlJava extends HttpServlet {
 	        in.close();
 	        if(percent.toString().isEmpty()){
 	        	percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
-	        	plagPercent.add(percentDuplicate);
+	        	//plagPercent.add(percentDuplicate);
 	        }
 	        
 	        
-	        while(plagPercent.iterator().hasNext()){
+	       /* while(plagPercent.iterator().hasNext()){
 	        	
 	        	if((plagPercent.iterator().next())>15){
 	        		
 	        		percent.append("Percentage of Plagiarism is : "+"-"+plagPercent.iterator().next());
 	        	}
 	        	
-	        }
+	        }*/
 	        percentage=percent.toString();
 	        return percentage;
 	    	
