@@ -141,7 +141,7 @@ public class PerlJava extends HttpServlet {
 	}
 	
 	protected String getMasterFileName(HttpServletRequest request){
-		String masterFileName="Walls.java";
+		String masterFileName="MyFirstRobot.java";
 		return masterFileName;
 	}
 	
@@ -166,8 +166,8 @@ public class PerlJava extends HttpServlet {
 	        	  
 	        	String fileName;
 	        	String re1=".*?";	// Non-greedy match on filler
-	            String re2="("+masterFileName+")";
-	            //String re2="(Walls\\.java)";// Fully Qualified Domain Name 1
+	            //String re2="("+masterFileName+")";
+	            String re2="(Walls\\.java)";// Fully Qualified Domain Name 1
 	            String txt=inputLine;
 	            Pattern p = Pattern.compile(re1+re2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	            Matcher m = p.matcher(txt);
