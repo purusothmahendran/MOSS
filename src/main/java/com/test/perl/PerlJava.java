@@ -141,7 +141,7 @@ public class PerlJava extends HttpServlet {
 	}
 	
 	protected String getMasterFileName(HttpServletRequest request){
-		String masterFileName="MyFirstRobot.java";
+		String masterFileName="Walls.java";
 		return masterFileName;
 	}
 	
