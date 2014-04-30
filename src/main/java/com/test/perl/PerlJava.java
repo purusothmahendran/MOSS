@@ -39,10 +39,10 @@ public class PerlJava extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+	Boolean isPlagiarised=false;
 		try {
-			
 			Boolean result;
+			
 			StringBuilder fileNames = new StringBuilder();
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
@@ -106,6 +106,7 @@ public class PerlJava extends HttpServlet {
 		                System.out.print(httpurl1.toString()+"\n");
 		              response.getWriter().print(httpurl1.toString());
 		              result= interpretURL(httpurl1.toString(),masterFileName);
+		              isPlagiarised=result;
 		              response.getWriter().print("\n"+ result+ "\n");
 		            }
 		        	   else{
@@ -124,7 +125,7 @@ public class PerlJava extends HttpServlet {
 			} catch(Exception excep) {
 			excep.printStackTrace();
 			}
-		
+		response.getWriter().print(isPlagiarised);
 	}
 	
 
