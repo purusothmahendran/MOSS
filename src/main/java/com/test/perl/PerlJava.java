@@ -146,7 +146,7 @@ public class PerlJava extends HttpServlet {
 	}
 	
 	protected String getBaseFileName(HttpServletRequest request){
-		String baseFileName="Tracker.java";
+		String baseFileName="Base.java";
 		return baseFileName;
 	}
 	
@@ -198,8 +198,8 @@ public class PerlJava extends HttpServlet {
 	        	        	print=intermediate.substring(1,2);
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
-	        	        if(percentDuplicate>15){
-	        	        percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+	        	        if(percentDuplicate>25){
+	        	        percent.append("True");
 	        	        plagiarised=true;
 	        	        return percent.toString();
 	        	        }
@@ -212,7 +212,7 @@ public class PerlJava extends HttpServlet {
 	        }
 	        in.close();
 	        if(percent.toString().isEmpty()){
-	        	percent.append("Percentage of Plagiarism is : "+"-"+percentDuplicate);
+	        	percent.append("False");
 	        	//plagPercent.add(percentDuplicate);
 	        }
 	        
