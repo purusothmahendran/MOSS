@@ -42,7 +42,7 @@ public class PerlJava extends HttpServlet {
 		
 		try {
 			
-			String result;
+			Boolean result;
 			StringBuilder fileNames = new StringBuilder();
 			Process process;
 			ServletContext servletContext = request.getSession().getServletContext();
@@ -150,9 +150,10 @@ public class PerlJava extends HttpServlet {
 		return baseFileName;
 	}
 	
-	 protected  String interpretURL(String resultURL,String masterFileName) throws Exception{
+	 protected  Boolean interpretURL(String resultURL,String masterFileName) throws Exception{
 	    	String result=resultURL;
 	    	String percentage;
+	    	Boolean plagiarised=false;
 	    	StringBuilder percent=new StringBuilder();
 	    	//List<Integer> plagPercent=new ArrayList<Integer>();
 	    	int percentDuplicate=0;
@@ -162,7 +163,7 @@ public class PerlJava extends HttpServlet {
 	        String inputLine;
 	        while ((inputLine = in.readLine()) != null)
 	        {
-	        	Boolean plagiarised=false;  
+	        	  
 	        	String fileName;
 	        	String re1=".*?";	// Non-greedy match on filler
 	            String re2="("+masterFileName+")";
@@ -198,10 +199,10 @@ public class PerlJava extends HttpServlet {
 	        	        	print=intermediate.substring(1,2);
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
-	        	        if(percentDuplicate>25){
+	        	        if(percentDuplicate>15){
 	        	        percent.append("True");
 	        	        plagiarised=true;
-	        	        return percent.toString();
+	        	        return plagiarised;
 	        	        }
 	        	        //plagPercent.add(percentDuplicate);
 	        	    }
@@ -219,7 +220,7 @@ public class PerlJava extends HttpServlet {
 	        
 	       
 	        percentage=percent.toString();
-	        return percentage;
+	        return plagiarised;
 	    	
 	    }
 }
