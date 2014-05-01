@@ -202,7 +202,7 @@ public class PerlJava extends HttpServlet {
 	        	        	print=intermediate.substring(1,2);
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
-	        	        if(percentDuplicate>25){
+	        	        if(percentDuplicate>16){
 	        	        percent.append("True"+percentDuplicate);
 	        	        plagiarised=true;
 	        	        return plagiarised;
