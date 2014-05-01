@@ -1,3 +1,8 @@
+
+/* Author Purusoth Mahendran */
+
+
+
 package com.test.perl;
 
 import java.io.BufferedReader;
@@ -39,7 +44,7 @@ public class PerlJava extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	Boolean isPlagiarised=false;
+	Boolean isPlagiarised=false; // Changed to True when the code is plagiarised
 		try {
 			Boolean result;
 			
@@ -68,9 +73,9 @@ public class PerlJava extends HttpServlet {
 			
 			for(int i=0;i<listFiles.length;i++)
 			{
-				//response.getWriter().print(listFiles[i]);
+				
 				fileNames.append(listFiles[i]+ " ");
-				//fileNames.append("");
+				
 			}
 			
 			//response.getWriter().print(fileNames+"\n");
@@ -78,13 +83,10 @@ public class PerlJava extends HttpServlet {
 			process = r.exec("perl " + path + " -l java -b "+ baseFilePath+" "
 					+ masterFile + " "
 					+ fileNames);
-			/*process = r.exec("perl " + path + " -l java "
-					+ file1 + " "
-					+ file2);*/
+			
 			
 			process.waitFor();
-			//Runtime rt = Runtime.getRuntime();
-			//rt.exec(command);
+			
 			if(process.exitValue() == 0) {
 			System.out.println("Process Executed Normally");
 			response.getWriter().print("Normal \n");
@@ -174,9 +176,9 @@ public class PerlJava extends HttpServlet {
 	            Matcher m = p.matcher(txt);
 	            if (m.find())
 	            {
-	                String fqdn1=m.group(1);
+	                 /*String fqdn1=m.group(1);
 	                System.out.println(inputLine);
-	                fileName=fqdn1.toString();
+	                fileName=fqdn1.toString();*/
 	                
 	                String reg1=".*?";	// Non-greedy match on filler
 	        	    String reg2="(\\([0-9]+%\\))";	// Round Braces 1
@@ -201,7 +203,7 @@ public class PerlJava extends HttpServlet {
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
 	        	        if(percentDuplicate>25){
-	        	        percent.append("True");
+	        	        percent.append("True"+percentDuplicate);
 	        	        plagiarised=true;
 	        	        return plagiarised;
 	        	        }
