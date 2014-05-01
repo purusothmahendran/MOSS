@@ -32,6 +32,7 @@ public class PerlJava extends HttpServlet {
 	public static final String PLAG_ROOT_FOLDER = "/var/lib/openshift/534a1c2e5004461227000cf4/app-root/data/Plag";
 	private static final long serialVersionUID = 1L;
 	private static final Logger log  = Logger.getLogger(PerlJava.class.getName());
+	Boolean isPlagiarised; 
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -46,9 +47,10 @@ public class PerlJava extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	Boolean isPlagiarised=false; // Changed to True when the code is plagiarised
+	// Changed to True when the code is plagiarised
 		try {
 			Boolean result;
+			Boolean isBasePlagiarised;
 			
 			StringBuilder fileNames = new StringBuilder();
 			Process process;
@@ -70,7 +72,11 @@ public class PerlJava extends HttpServlet {
 				System.out.println("hello");
 				response.getWriter().print("Checking Files exists \n");
 			}
-			Boolean isBasePlagiarised=isBasePlagiarised(path, masterFile, baseFilePath, masterFileName);
+		
+			isBasePlagiarised=isBasePlagiarised(path, masterFile, baseFilePath, masterFileName);
+			
+			
+			
 			if(!isBasePlagiarised)
 			{
 			File vFiles=new File(compFiles);
@@ -82,53 +88,14 @@ public class PerlJava extends HttpServlet {
 				fileNames.append(listFiles[i]+ " ");
 				
 			}
+			String command_normal="perl " + path + " -l java -b "+ baseFilePath+" "
+			+ masterFile + " "
+			+ fileNames;
 			
-			//response.getWriter().print(fileNames+"\n");
-			Runtime r = Runtime.getRuntime();
-			process = r.exec("perl " + path + " -l java -b "+ baseFilePath+" "
-					+ masterFile + " "
-					+ fileNames);
-			
-			
-			process.waitFor();
-			
-			if(process.exitValue() == 0) {
-			System.out.println("Process Executed Normally");
-			response.getWriter().print("Normal \n");
-			
-			try {
-				
-				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				String inputLine;
-				
-				while ((inputLine = in.readLine()) != null) {
-					String re1=".*?";	// Non-greedy match on filler
-		            String re2="(http:\\/\\/moss\\.stanford\\.edu\\/results\\/[0-9]+)";	// HTTP URL 1
-
-		            Pattern p = Pattern.compile(re1+re2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-		            Matcher m = p.matcher(inputLine);
-		            if (m.find())
-		            {
-		                String httpurl1=m.group(1);
-		                System.out.print(httpurl1.toString()+"\n");
-		              response.getWriter().print(httpurl1.toString());
-		              result= interpretURL(httpurl1.toString(),masterFileName,16);
-		              isPlagiarised=result;
-		              response.getWriter().print("\n The file is plagiarised"+ result+ "\n");
-		            }
-		        	   else{
-		        		   //response.getWriter().print("NOT MATCHING");
-		        		   System.out.println("nomatch");}
-		            
-		            
-				}
-				} catch (IOException e) {
-				e.printStackTrace();
-				}
-			} else {
-			System.out.println("Execution Failed");
-			response.getWriter().print("Failed");
-			}
+			String resultURL =MOSSCheck(command_normal);
+			log.info(resultURL);
+			isPlagiarised=interpretURL(resultURL, masterFileName,16);
+			log.info("The Master file is plagiarised from other files");
 			}
 			else{
 				
@@ -240,23 +207,38 @@ public class PerlJava extends HttpServlet {
 	        return plagiarised;
 	    	
 	    }
-	 protected Boolean isBasePlagiarised(String path, String masterFilePath, String baseFilePath, String masterFileName) throws Exception{
+	 protected final Boolean isBasePlagiarised(String path, String masterFilePath, String baseFilePath, String masterFileName) throws Exception{
 		 
-		 Boolean isPlagiarised=false;
+		 String command="perl " + path + " -l java "+ masterFilePath + " "
+					+ baseFilePath;
 		 try{
-		
-	
+			 
+			 String resultURL=MOSSCheck(command);
+			 log.info(resultURL);
+			Boolean isPlagiarised=interpretURL(resultURL, masterFileName,90);
+			 log.info("Base File is Plagiarised : " +isPlagiarised.toString());
+			 return isPlagiarised;
+		 }
+		 catch(Exception e){
+			 
+		 }
+		 
+		 return false;
+	 }
+	 
+	 protected String MOSSCheck(String command) throws Exception{
+		 String resultURL;
 		 Process process;
-		 Runtime r = Runtime.getRuntime();
-			process = r.exec("perl " + path + " -l java "+ masterFilePath + " "
-					+ baseFilePath);
+			Runtime r = Runtime.getRuntime();
+			process = r.exec(command);
 			
 			
 			process.waitFor();
 			
 			if(process.exitValue() == 0) {
 			System.out.println("Process Executed Normally");
-
+			log.info("PROCESS EXECUTED SUCCESSFULLY");
+			
 			try {
 				
 				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -272,17 +254,15 @@ public class PerlJava extends HttpServlet {
 		            {
 		                String httpurl1=m.group(1);
 		                System.out.print(httpurl1.toString()+"\n");
-		                log.info(httpurl1.toString());
-		              //response.getWriter().print(httpurl1.toString());
-		              isPlagiarised= interpretURL(httpurl1.toString(),masterFileName,90);
-		             log.info(isPlagiarised.toString());
-		              return isPlagiarised;
+		              log.info(httpurl1.toString());
+		              resultURL=httpurl1.toString();
+		              log.info("The URL FROM MOSS CHECK FUNC "+resultURL);
+		              return resultURL;
 		              
-		             // response.getWriter().print("\n"+ result+ "\n");
 		            }
 		        	   else{
 		        		   //response.getWriter().print("NOT MATCHING");
-		        		   System.out.println("nomatch");}
+		        		   System.out.println("nomatching URL Pattern");}
 		            
 		            
 				}
@@ -291,17 +271,8 @@ public class PerlJava extends HttpServlet {
 				}
 			} else {
 			System.out.println("Execution Failed");
-			//response.getWriter().print("Failed");
+			log.info("Failed Executing");
 			}
-			
-			
-			
-			
-			
-			}
-		 catch(Exception e){
-			 
-		 }
-		 return isPlagiarised;
+		 return null;
 	 }
 }
