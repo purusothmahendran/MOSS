@@ -114,7 +114,7 @@ public class PerlJava extends HttpServlet {
 		              response.getWriter().print(httpurl1.toString());
 		              result= interpretURL(httpurl1.toString(),masterFileName,16);
 		              isPlagiarised=result;
-		              response.getWriter().print("\n"+ result+ "\n");
+		              response.getWriter().print("\n The file is plagiarised"+ result+ "\n");
 		            }
 		        	   else{
 		        		   //response.getWriter().print("NOT MATCHING");
@@ -133,8 +133,9 @@ public class PerlJava extends HttpServlet {
 			else{
 				
 				response.getWriter().print("Base File pLagiarised");
-				isBasePlagiarised=isBasePlagiarised;
+				isPlagiarised=isBasePlagiarised;
 			}
+			
 			} catch(Exception excep) {
 			excep.printStackTrace();
 			}
@@ -180,8 +181,8 @@ public class PerlJava extends HttpServlet {
 	        	  
 	        	String fileName;
 	        	String re1=".*?";	// Non-greedy match on filler
-	            //String re2="("+masterFileName+")";
-	            String re2="(Walls\\.java)";// Fully Qualified Domain Name 1
+	            String re2="("+masterFileName+")";
+	            //String re2="(Walls\\.java)";// Fully Qualified Domain Name 1
 	            String txt=inputLine;
 	            Pattern p = Pattern.compile(re1+re2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	            Matcher m = p.matcher(txt);
@@ -213,8 +214,10 @@ public class PerlJava extends HttpServlet {
 	        	        	print=intermediate.substring(1,2);
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
+	        	        
 	        	        if(percentDuplicate>thresHold){
 	        	        percent.append("True"+percentDuplicate);
+	        	        log.info(percent.toString());
 	        	        plagiarised=true;
 	        	        return plagiarised;
 	        	        }
