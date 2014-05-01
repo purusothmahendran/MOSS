@@ -94,8 +94,9 @@ public class PerlJava extends HttpServlet {
 			
 			String resultURL =MOSSCheck(command_normal);
 			log.info(resultURL);
-			isPlagiarised=interpretURL(resultURL, masterFileName,16);
-			log.info("The Master file is plagiarised from other files");
+			isPlagiarised=interpretURL(resultURL, "Walls.java",16);
+			log.info("The Master file is plagiarised from other files : " +isPlagiarised );
+			response.getWriter().print(isPlagiarised);
 			}
 			else{
 				
