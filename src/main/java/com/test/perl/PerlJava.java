@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PerlJava extends HttpServlet {
 	public static final String PLAG_ROOT_FOLDER = "/var/lib/openshift/534a1c2e5004461227000cf4/app-root/data/Plag";
 	private static final long serialVersionUID = 1L;
+	private static final Logger log  = Logger.getLogger(PerlJava.class.getName());
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -68,6 +70,9 @@ public class PerlJava extends HttpServlet {
 				System.out.println("hello");
 				response.getWriter().print("Checking Files exists \n");
 			}
+			Boolean isBasePlagiarised=isBasePlagiarised(path, masterFile, baseFilePath, masterFileName);
+			if(!isBasePlagiarised)
+			{
 			File vFiles=new File(compFiles);
 			File[] listFiles=vFiles.listFiles();
 			
@@ -107,7 +112,7 @@ public class PerlJava extends HttpServlet {
 		                String httpurl1=m.group(1);
 		                System.out.print(httpurl1.toString()+"\n");
 		              response.getWriter().print(httpurl1.toString());
-		              result= interpretURL(httpurl1.toString(),masterFileName);
+		              result= interpretURL(httpurl1.toString(),masterFileName,16);
 		              isPlagiarised=result;
 		              response.getWriter().print("\n"+ result+ "\n");
 		            }
@@ -123,6 +128,12 @@ public class PerlJava extends HttpServlet {
 			} else {
 			System.out.println("Execution Failed");
 			response.getWriter().print("Failed");
+			}
+			}
+			else{
+				
+				response.getWriter().print("Base File pLagiarised");
+				isBasePlagiarised=isBasePlagiarised;
 			}
 			} catch(Exception excep) {
 			excep.printStackTrace();
@@ -144,7 +155,7 @@ public class PerlJava extends HttpServlet {
 	}
 	
 	protected String getMasterFileName(HttpServletRequest request){
-		String masterFileName="MyFirstRobot.java";
+		String masterFileName="Base.java";
 		return masterFileName;
 	}
 	
@@ -153,7 +164,7 @@ public class PerlJava extends HttpServlet {
 		return baseFileName;
 	}
 	
-	 protected  Boolean interpretURL(String resultURL,String masterFileName) throws Exception{
+	 protected  Boolean interpretURL(String resultURL,String masterFileName, int thresHold) throws Exception{
 	    	String result=resultURL;
 	    	String percentage;
 	    	Boolean plagiarised=false;
@@ -202,7 +213,7 @@ public class PerlJava extends HttpServlet {
 	        	        	print=intermediate.substring(1,2);
 	        	        }
 	        	        percentDuplicate=Integer.parseInt(print);
-	        	        if(percentDuplicate>16){
+	        	        if(percentDuplicate>thresHold){
 	        	        percent.append("True"+percentDuplicate);
 	        	        plagiarised=true;
 	        	        return plagiarised;
@@ -226,4 +237,68 @@ public class PerlJava extends HttpServlet {
 	        return plagiarised;
 	    	
 	    }
+	 protected Boolean isBasePlagiarised(String path, String masterFilePath, String baseFilePath, String masterFileName) throws Exception{
+		 
+		 Boolean isPlagiarised=false;
+		 try{
+		
+	
+		 Process process;
+		 Runtime r = Runtime.getRuntime();
+			process = r.exec("perl " + path + " -l java "+ masterFilePath + " "
+					+ baseFilePath);
+			
+			
+			process.waitFor();
+			
+			if(process.exitValue() == 0) {
+			System.out.println("Process Executed Normally");
+
+			try {
+				
+				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				String inputLine;
+				
+				while ((inputLine = in.readLine()) != null) {
+					String re1=".*?";	// Non-greedy match on filler
+		            String re2="(http:\\/\\/moss\\.stanford\\.edu\\/results\\/[0-9]+)";	// HTTP URL 1
+
+		            Pattern p = Pattern.compile(re1+re2,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+		            Matcher m = p.matcher(inputLine);
+		            if (m.find())
+		            {
+		                String httpurl1=m.group(1);
+		                System.out.print(httpurl1.toString()+"\n");
+		                log.info(httpurl1.toString());
+		              //response.getWriter().print(httpurl1.toString());
+		              isPlagiarised= interpretURL(httpurl1.toString(),masterFileName,90);
+		             log.info(isPlagiarised.toString());
+		              return isPlagiarised;
+		              
+		             // response.getWriter().print("\n"+ result+ "\n");
+		            }
+		        	   else{
+		        		   //response.getWriter().print("NOT MATCHING");
+		        		   System.out.println("nomatch");}
+		            
+		            
+				}
+				} catch (IOException e) {
+				e.printStackTrace();
+				}
+			} else {
+			System.out.println("Execution Failed");
+			//response.getWriter().print("Failed");
+			}
+			
+			
+			
+			
+			
+			}
+		 catch(Exception e){
+			 
+		 }
+		 return isPlagiarised;
+	 }
 }
